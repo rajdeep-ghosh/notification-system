@@ -1,0 +1,15 @@
+{
+  "name": "api-service",
+  "version": "0.1.0",
+  "description": "",
+  "author": "Rajdeep Ghosh",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "express": "^4.18.2"
+  }
+}
