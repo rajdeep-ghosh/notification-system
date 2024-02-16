@@ -20,6 +20,8 @@ app.post("/notify", async (req, res) => {
       Buffer.from(JSON.stringify({ type, to, subject, body }))
     );
 
+    console.log(`Task sent to queue of type ${type}`);
+
     res.json({ status: "ok" });
   } catch (err) {
     console.error(err);

@@ -1,5 +1,4 @@
 import amqp from "amqplib";
-import { Resend } from "resend";
 
 async function consumer() {
   const connection = await amqp.connect("amqp://localhost");
@@ -8,24 +7,19 @@ async function consumer() {
   const exchangeName = "notification_system";
   await channel.assertExchange(exchangeName, "direct");
 
-  const q = await channel.assertQueue("email_queue", { durable: true });
-  await channel.bindQueue(q.queue, exchangeName, "email");
+  const q = await channel.assertQueue("sms_queue", { durable: true });
+  await channel.bindQueue(q.queue, exchangeName, "sms");
   await channel.prefetch(1);
 
-  console.log("Email service started");
+  console.log("SMS service started");
 
   channel.consume(q.queue, async (msg) => {
     const task = JSON.parse(msg.content.toString());
 
-    const resend = new Resend("re_fZUrRZ5S_LAYVJjEAjLXzEzjkGqiPj7Qv");
-    const response = await resend.emails.send({
-      from: "noreply@mail.rajdeepghosh.me",
-      to: [task.to],
-      subject: task.subject,
-      text: task.body,
-    });
+    // simulate sending sms
+    await new Promise((resolve) => setTimeout(resolve, 4000));
 
-    console.log(response);
+    console.log(task);
     console.log("Task completed");
 
     channel.ack(msg);
