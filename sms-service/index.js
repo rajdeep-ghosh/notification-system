@@ -7,20 +7,30 @@ async function consumer() {
   const exchangeName = "notification_system";
   await channel.assertExchange(exchangeName, "direct");
 
-  const q = await channel.assertQueue("sms_queue", { durable: true });
-  await channel.bindQueue(q.queue, exchangeName, "sms");
+  const smsq = await channel.assertQueue("sms_queue", { durable: true });
+  const dbq = await channel.assertQueue("db_queue", { durable: true });
+  await channel.bindQueue(smsq.queue, exchangeName, "sms");
   await channel.prefetch(1);
 
   console.log("SMS service started");
 
-  channel.consume(q.queue, async (msg) => {
+  channel.consume(smsq.queue, async (msg) => {
     const task = JSON.parse(msg.content.toString());
 
     // simulate sending sms
     await new Promise((resolve) => setTimeout(resolve, 4000));
+    console.log("Task failed");
 
-    console.log(task);
-    console.log("Task completed");
+    channel.sendToQueue(
+      dbq.queue,
+      Buffer.from(
+        JSON.stringify({
+          status: "fail",
+          message_id: null,
+          ...task,
+        })
+      )
+    );
 
     channel.ack(msg);
   });

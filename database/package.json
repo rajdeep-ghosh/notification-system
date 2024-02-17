@@ -1,5 +1,5 @@
 {
-  "name": "email-service",
+  "name": "database",
   "version": "0.1.0",
   "description": "",
   "author": "Rajdeep Ghosh",
@@ -11,6 +11,6 @@
   },
   "dependencies": {
     "amqplib": "^0.10.3",
-    "resend": "^3.2.0"
+    "mongoose": "^8.1.3"
   }
 }

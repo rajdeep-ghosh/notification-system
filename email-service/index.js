@@ -8,13 +8,14 @@ async function consumer() {
   const exchangeName = "notification_system";
   await channel.assertExchange(exchangeName, "direct");
 
-  const q = await channel.assertQueue("email_queue", { durable: true });
-  await channel.bindQueue(q.queue, exchangeName, "email");
+  const emailq = await channel.assertQueue("email_queue", { durable: true });
+  const dbq = await channel.assertQueue("db_queue", { durable: true });
+  await channel.bindQueue(emailq.queue, exchangeName, "email");
   await channel.prefetch(1);
 
   console.log("Email service started");
 
-  channel.consume(q.queue, async (msg) => {
+  channel.consume(emailq.queue, async (msg) => {
     const task = JSON.parse(msg.content.toString());
 
     const resend = new Resend("re_fZUrRZ5S_LAYVJjEAjLXzEzjkGqiPj7Qv");
@@ -24,9 +25,18 @@ async function consumer() {
       subject: task.subject,
       text: task.body,
     });
+    console.log(response.data ? "Task completed" : "Task failed");
 
-    console.log(response);
-    console.log("Task completed");
+    channel.sendToQueue(
+      dbq.queue,
+      Buffer.from(
+        JSON.stringify({
+          status: response.data ? "success" : "fail",
+          message_id: response.data?.id,
+          ...task,
+        })
+      )
+    );
 
     channel.ack(msg);
   });
