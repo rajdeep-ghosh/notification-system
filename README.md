@@ -6,19 +6,24 @@ Server/Client triggers sending notification by calling the API service and provi
 
 ## Running Locally
 
-To run locally make sure you have **Node.js, RabbitMQ and MongoDB** installed in your system.
+To run locally make sure you have **Node.js, RabbitMQ and MongoDB** installed on your system & running on default ports.
 
-- Clone the project locally
+- Clone the project locally & cd into the project
 
-- On different terminal windows, cd into api-service, email-service, sms-service, database
+- Install dependencies
 
-- On each terminal window run
+  ```bash
+  npm i
+  ```
+
+- Start project
 
   ```bash
   npm run start
   ```
 
-- Using Postman send a **POST** request to **localhost:3000** with the following JSON body
+- Using Postman send a **POST** request to **localhost:6969/notify** with the following JSON body
+
   ```json
   {
     "type": "email",

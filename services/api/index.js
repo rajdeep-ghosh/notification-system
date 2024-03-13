@@ -4,6 +4,8 @@ import amqp from "amqplib";
 const app = express();
 app.use(express.json());
 
+const PORT = 6969;
+
 app.post("/notify", async (req, res) => {
   try {
     const { type, to, subject, body } = req.body;
@@ -29,4 +31,4 @@ app.post("/notify", async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log("API service started"));
+app.listen(PORT, () => console.log(`API service started on port ${PORT}`));

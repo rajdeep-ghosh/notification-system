@@ -1,0 +1,17 @@
+{
+  "name": "notification-system",
+  "version": "0.1.0",
+  "description": "Multi-channel notification delivery system for channels like email, sms, push, etc.",
+  "private": "true",
+  "author": "Rajdeep Ghosh (github.com/rajdeep-ghosh)",
+  "workspaces": [
+    "services/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "start": "turbo run start"
+  },
+  "devDependencies": {
+    "turbo": "^1.12.5"
+  }
+}
