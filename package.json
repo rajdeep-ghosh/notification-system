@@ -8,7 +8,9 @@
     "services/*"
   ],
   "scripts": {
+    "predev": "echo waiting for services to get ready... && sleep 10",
     "dev": "turbo run dev",
+    "prestart": "echo waiting for services to get ready... && sleep 10",
     "start": "turbo run start"
   },
   "devDependencies": {

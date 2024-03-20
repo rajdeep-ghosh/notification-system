@@ -1,7 +1,7 @@
 import amqp from "amqplib";
 
 async function consumer() {
-  const connection = await amqp.connect("amqp://localhost");
+  const connection = await amqp.connect("amqp://ns-rabbitmq:5672");
   const channel = await connection.createChannel();
 
   const exchangeName = "notification_system";

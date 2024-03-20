@@ -4,7 +4,37 @@ Server/Client triggers sending notification by calling the API service and provi
 
 ![architecture](./.github/image.png)
 
+## Components and Technologies Used
+
+1. Node.js and Express Server:
+
+   - Handles incoming requests and manages responses.
+
+1. RabbitMQ Message Queue:
+
+   - Notifications are forwarded to a message queue of its type upon receipt.
+
+   - A subscriber consumes these tasks and writes them to the database.
+
+1. MongoDB:
+
+   - Stores all notifications along with its status
+
 ## Running Locally
+
+### Using Docker
+
+To run the project you need **Docker** installed on your system. If you don't have Docker installed, follow the instructions provided [here](https://docs.docker.com/get-docker/) to install Docker for your operating system.
+
+- Clone the project locally & cd into the project
+
+- Start the containers
+
+  ```bash
+  docker compose -f docker-compose.yml up
+  ```
+
+### Manual Setup
 
 To run locally make sure you have **Node.js, RabbitMQ and MongoDB** installed on your system & running on default ports.
 
@@ -16,22 +46,26 @@ To run locally make sure you have **Node.js, RabbitMQ and MongoDB** installed on
   npm i
   ```
 
+- Change the RabbitMQ and MongoDB connection strings of all the services
+
 - Start project
 
   ```bash
   npm run start
   ```
 
-- Using Postman send a **POST** request to **localhost:6969/notify** with the following JSON body
+## Usage
 
-  ```json
-  {
-    "type": "email",
-    "to": "name@example.com",
-    "subject": "Notification System Test",
-    "body": "it works!"
-  }
-  ```
+Using Postman send a **POST** request to **localhost:6969/notify** with the following JSON body
+
+```json
+{
+  "type": "email", // or "sms"
+  "to": "name@example.com", // phone no. for sms
+  "subject": "Notification System Test",
+  "body": "it works!"
+}
+```
 
 \
 _Note: - Email service is fully functional_

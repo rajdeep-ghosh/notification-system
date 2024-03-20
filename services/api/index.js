@@ -10,7 +10,7 @@ app.post("/notify", async (req, res) => {
   try {
     const { type, to, subject, body } = req.body;
 
-    const connect = await amqp.connect("amqp://localhost");
+    const connect = await amqp.connect("amqp://ns-rabbitmq:5672");
     const channel = await connect.createChannel();
 
     const exchangeName = "notification_system";

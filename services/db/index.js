@@ -3,11 +3,11 @@ import amqp from "amqplib";
 import Notification from "./models/notification.js";
 
 async function db() {
-  await mongoose.connect("mongodb://localhost", {
+  await mongoose.connect("mongodb://ns-mongo:27017", {
     dbName: "notification_db",
   });
 
-  const connection = await amqp.connect("amqp://localhost");
+  const connection = await amqp.connect("amqp://ns-rabbitmq:5672");
   const channel = await connection.createChannel();
 
   const dbq = await channel.assertQueue("db_queue", { durable: true });

@@ -1,0 +1,37 @@
+name: notification-system
+
+# Define a network, which allows containers to communicate
+# with each other, by using their container name as a hostname
+networks:
+  ns-network:
+    driver: bridge
+
+services:
+  rabbitmq:
+    container_name: ns-rabbitmq
+    image: rabbitmq:3.12-management-alpine
+    ports:
+      - "15672:15672"
+    networks:
+      - ns-network
+    attach: false
+
+  mongo:
+    container_name: ns-mongo
+    image: mongo:7.0.5
+    ports:
+      - "27017:27017"
+    networks:
+      - ns-network
+    attach: false
+  
+  app:
+    container_name: ns-app
+    build: .
+    ports:
+      - "6969:6969"
+    networks:
+      - ns-network
+    depends_on:
+      - rabbitmq
+      - mongo
