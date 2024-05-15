@@ -18,7 +18,7 @@ async function consumer() {
   channel.consume(emailq.queue, async (msg) => {
     const task = JSON.parse(msg.content.toString());
 
-    const resend = new Resend("re_fZUrRZ5S_LAYVJjEAjLXzEzjkGqiPj7Qv");
+    const resend = new Resend(""); // resend api key
     const response = await resend.emails.send({
       from: "noreply@mail.rajdeepghosh.me",
       to: [task.to],
