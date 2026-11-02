@@ -2,17 +2,18 @@
   "name": "email",
   "version": "0.1.0",
   "author": "Rajdeep Ghosh",
-  "main": "index.js",
+  "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js"
+    "dev": "tsx watch index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "amqplib": "^0.10.3",
     "resend": "^3.2.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "@types/amqplib": "^0.10.8"
   }
 }

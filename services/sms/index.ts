@@ -1,5 +1,12 @@
 import amqp from "amqplib";
 
+interface SmsTask {
+  type: "sms";
+  to: string;
+  subject: string;
+  body: string;
+}
+
 async function consumer() {
   const connection = await amqp.connect("amqp://ns-rabbitmq:5672");
   const channel = await connection.createChannel();
@@ -15,7 +22,9 @@ async function consumer() {
   console.log("SMS service started");
 
   channel.consume(smsq.queue, async (msg) => {
-    const task = JSON.parse(msg.content.toString());
+    if (!msg) return;
+
+    const task: SmsTask = JSON.parse(msg.content.toString());
 
     // simulate sending sms
     await new Promise((resolve) => setTimeout(resolve, 4000));

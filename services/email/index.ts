@@ -1,6 +1,13 @@
 import amqp from "amqplib";
 import { Resend } from "resend";
 
+interface EmailTask {
+  type: "email";
+  to: string;
+  subject: string;
+  body: string;
+}
+
 async function consumer() {
   const connection = await amqp.connect("amqp://ns-rabbitmq:5672");
   const channel = await connection.createChannel();
@@ -16,7 +23,9 @@ async function consumer() {
   console.log("Email service started");
 
   channel.consume(emailq.queue, async (msg) => {
-    const task = JSON.parse(msg.content.toString());
+    if (!msg) return;
+
+    const task: EmailTask = JSON.parse(msg.content.toString());
 
     const resend = new Resend(""); // resend api key
     const response = await resend.emails.send({

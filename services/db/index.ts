@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import amqp from "amqplib";
-import Notification from "./models/notification.js";
+import Notification, { type INotification } from "./models/notification.js";
 
 async function db() {
   await mongoose.connect("mongodb://ns-mongo:27017", {
@@ -16,7 +16,9 @@ async function db() {
   console.log("DB service started");
 
   channel.consume(dbq.queue, async (msg) => {
-    const task = JSON.parse(msg.content.toString());
+    if (!msg) return;
+
+    const task: INotification = JSON.parse(msg.content.toString());
 
     const newNotification = new Notification({ ...task });
     await newNotification.save();
